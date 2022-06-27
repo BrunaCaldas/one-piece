@@ -9,6 +9,7 @@ var torre;
 var defesa;
 var birinbinha
 var algulodabirinbinha 
+var bola8;
 
 
 function preload() {
@@ -31,8 +32,10 @@ function setup() {
 
  torre = Bodies.rectangle(160,350,160,310,options);
  World.add(world, torre);
+ angleMode(DEGREES)
  algulodabirinbinha = 20
  birinbinha = new Bola (180,110,130,100,algulodabirinbinha)
+ bola8 = new Boliche(birinbinha.posX, birinbinha.posY);
 }
 
 function draw() {
@@ -48,4 +51,10 @@ function draw() {
  image(defesa,torre.position.x, torre.position.y, 160, 310);
  pop();
  birinbinha.rabisco();
+ bola8.rabisco();
 }
+ function keyReleased(){
+ if(keyCode === DOWN_ARROW){
+ bola8.bang();
+ }
+ }
