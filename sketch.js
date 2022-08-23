@@ -10,6 +10,7 @@ var defesa;
 var birinbinha
 var algulodabirinbinha 
 var bola8;
+var pastel = [];
 
 
 function preload() {
@@ -35,7 +36,7 @@ function setup() {
  angleMode(DEGREES)
  algulodabirinbinha = 20
  birinbinha = new Bola (180,110,130,100,algulodabirinbinha)
- bola8 = new Boliche(birinbinha.posX, birinbinha.posY);
+ 
 }
 
 function draw() {
@@ -51,10 +52,24 @@ function draw() {
  image(defesa,torre.position.x, torre.position.y, 160, 310);
  pop();
  birinbinha.rabisco();
- bola8.rabisco();
+ for(var chiclete = 0; chiclete < pastel.length; chiclete ++)
+ {
+   caldoDeCana (pastel[chiclete],chiclete)
+ }
 }
  function keyReleased(){
  if(keyCode === DOWN_ARROW){
- bola8.bang();
+ pastel[pastel.length -1].bang();
  }
+ }
+ function keyPressed(){
+  if(keyCode === DOWN_ARROW){
+    var bola8 = new Boliche(birinbinha.posX, birinbinha.posY);
+    pastel.push(bola8);
+  }
+ }
+ function caldoDeCana(bola8, i){
+    if(bola8){
+      bola8.rabisco();
+    }
  }
