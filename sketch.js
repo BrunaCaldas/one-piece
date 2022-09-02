@@ -56,6 +56,7 @@ function draw() {
  for(var chiclete = 0; chiclete < pastel.length; chiclete ++)
  {
    caldoDeCana (pastel[chiclete],chiclete)
+   embate (chiclete)
  }
  capitaogancho();
  
@@ -74,11 +75,14 @@ function draw() {
  function caldoDeCana(bola8, i){
     if(bola8){
       bola8.rabisco();
+      if (bola8.corpo.position.x>=width||bola8.corpo.position.y>=height-50){
+      bola8.jacksparrow(i)
+      }
     }
  }
  function capitaogancho() {
  if (barbanegra.length >0 ){
- if(barbanegra[barbanegra.length-1].corpo.position.x<width -300){
+ if(barbanegra[barbanegra.length-1] === undefined || barbanegra[barbanegra.length-1].corpo.position.x<width -300){
  var positions = [-40,-60,-70,-20];
  var position = random (positions);
  var iogurte = new Tripulacao(width, height-60, 170, 170, position);
@@ -95,5 +99,17 @@ if (barbanegra[i]){
  } else {
 var iogurte = new Tripulacao(width, height-60, 170, 170, -80);
 barbanegra.push(iogurte);
+ }
+ }
+ function embate (index){
+ for (var i = 0; i<barbanegra.length; i ++){
+ if (pastel[index]!==undefined&&barbanegra[i]!==undefined){
+ var isi = Matter.SAT.collides(pastel[index].corpo,barbanegra[i].corpo);
+ if (isi.collided){
+ barbanegra[i].jacksparrow(i);
+ World.remove(world,pastel[index].corpo);
+ delete pastel[index];
+ }
+ }
  }
  }

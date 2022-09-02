@@ -19,4 +19,10 @@ class Tripulacao {
         image(this.imagem, 0, this.posicao, this.lar, this.alt);
         pop();
     }
+        jacksparrow(index){
+        setTimeout(()=>{
+        World.remove(world, barbanegra[index].corpo);
+        delete barbanegra[index];
+        },2000)
+        }
 }
