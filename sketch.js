@@ -13,12 +13,19 @@ var bola8;
 var pastel = [];
 var iogurte;
 var barbanegra = [];
+var barbanegraAnimation = [];
+var barbanegraDados, barbanegraSpritesheet;
+var aotAnimation = [];
+var aotDados, aotSpritesheet;
 
 function preload() {
   campo = loadImage("./assets/background.gif");
   defesa = loadImage("./assets/tower.png");
+  barbanegraSpritesheet = loadImage("./assets/boat/boat.png");
+  barbanegraDados = loadJSON("./assets/boat/boat.json");
+  aotSpritesheet = loadImage("./assets/boat/brokenBoat.png");
+  aotDados = loadJSON("./assets/boat/brokenBoat.json");
 }
-
 function setup() {
 
   canvas = createCanvas(1200, 600);
@@ -38,6 +45,20 @@ function setup() {
  algulodabirinbinha = 20
  birinbinha = new Bola (180,110,130,100,algulodabirinbinha)
 
+ var barbanegraFrames = barbanegraDados.frames;
+
+ for(var i = 0; barbanegraFrames.length < 0; i++){
+  var pos = barbanegraFrames[i].position;
+  var img = barbanegraSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+  barbanegraAnimation.push(img);
+ }
+ var aotFrames = aotDados.frames;
+
+ for(var i = 0; aotFrames.length < 0; i++){
+  var pos = aotFrames[i].position;
+  var img = aotSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+  aotAnimation.push(img);
+ }
 }
 
 function draw() {
@@ -85,7 +106,7 @@ function draw() {
  if(barbanegra[barbanegra.length-1] === undefined || barbanegra[barbanegra.length-1].corpo.position.x<width -300){
  var positions = [-40,-60,-70,-20];
  var position = random (positions);
- var iogurte = new Tripulacao(width, height-60, 170, 170, position);
+ var iogurte = new Tripulacao(width, height-60, 170, 170, position, barbanegraAnimation);
  barbanegra.push(iogurte);
 
  }
@@ -93,11 +114,11 @@ for (var i = 0; i<barbanegra.length; i ++){
 if (barbanegra[i]){
   Matter.Body.setVelocity(barbanegra[i].corpo, {x: -0.9, y:0});
   barbanegra[i].rabisco();
- 
+  barbanegra[i].marquinhos();
 }
 }
  } else {
-var iogurte = new Tripulacao(width, height-60, 170, 170, -80);
+var iogurte = new Tripulacao(width, height-60, 170, 170, -80, barbanegraAnimation);
 barbanegra.push(iogurte);
  }
  }
