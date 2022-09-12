@@ -17,6 +17,14 @@ var barbanegraAnimation = [];
 var barbanegraDados, barbanegraSpritesheet;
 var aotAnimation = [];
 var aotDados, aotSpritesheet;
+var aguaAnimation = [];
+var aguaDados, aguaSpritesheet;
+var batata = false;
+var backyardigans;
+var pipoco;
+var palhacada;
+var splash;
+var contando = 0;
 
 function preload() {
   campo = loadImage("./assets/background.gif");
@@ -25,6 +33,12 @@ function preload() {
   barbanegraDados = loadJSON("./assets/boat/boat.json");
   aotSpritesheet = loadImage("./assets/boat/brokenBoat.png");
   aotDados = loadJSON("./assets/boat/brokenBoat.json");
+  aguaSpritesheet = loadImage("./assets/waterSplash/waterSplash.png");
+  aguaDados = loadJSON("./assets/waterSplash/waterSplash.json");
+  backyardigans = loadSound("./assets/background_music.mp3");
+  pipoco = loadSound("./assets/cannon_explosion.mp3");
+  palhacada = loadSound("./assets/pirate_laugh.mp3");
+  splash = loadSound("./assets/cannon_water.mp3");
 }
 function setup() {
 
@@ -47,24 +61,36 @@ function setup() {
 
  var barbanegraFrames = barbanegraDados.frames;
 
- for(var i = 0; barbanegraFrames.length < 0; i++){
+ for(var i = 0; i < barbanegraFrames.length; i++){
   var pos = barbanegraFrames[i].position;
   var img = barbanegraSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
   barbanegraAnimation.push(img);
  }
+
  var aotFrames = aotDados.frames;
 
- for(var i = 0; aotFrames.length < 0; i++){
+ for(var i = 0; i < aotFrames.length; i++){
   var pos = aotFrames[i].position;
   var img = aotSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
   aotAnimation.push(img);
  }
+
+ var aguaFrames = aguaDados.frames;
+
+ for(var i = 0; i < aguaFrames.length; i++){
+  var pos = aguaFrames[i].position;
+  var img = aguaSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+  aguaAnimation.push(img);
+ }
+
 }
 
 function draw() {
   background(189);
   image(campo, 0, 0, 1200, 600);
-
+  fill("darkred")
+  textSize(40)
+  text(contando,50,50)
   Engine.update(engine);
  
  rect(grama.position.x, grama.position.y,width*2,1);
@@ -96,6 +122,7 @@ function draw() {
  function caldoDeCana(bola8, i){
     if(bola8){
       bola8.rabisco();
+      bola8.marquinhos();
       if (bola8.corpo.position.x>=width||bola8.corpo.position.y>=height-50){
       bola8.jacksparrow(i)
       }
@@ -115,6 +142,11 @@ if (barbanegra[i]){
   Matter.Body.setVelocity(barbanegra[i].corpo, {x: -0.9, y:0});
   barbanegra[i].rabisco();
   barbanegra[i].marquinhos();
+  var isi = Matter.SAT.collides(torre, barbanegra[i].corpo);
+  if(isi.collided && !barbanegra[i].titanic){
+    batata = true;
+    ehOFim();
+  }
 }
 }
  } else {
@@ -127,10 +159,26 @@ barbanegra.push(iogurte);
  if (pastel[index]!==undefined&&barbanegra[i]!==undefined){
  var isi = Matter.SAT.collides(pastel[index].corpo,barbanegra[i].corpo);
  if (isi.collided){
+contando+= 5;
  barbanegra[i].jacksparrow(i);
  World.remove(world,pastel[index].corpo);
  delete pastel[index];
  }
  }
  }
+ }
+
+ function ehOFim(){
+  swal({
+    title: "Ih! Os piratas roubaram o seu tesouro!",
+    text:"Terra à vista!",
+    imageUrl: "https://raw.githubusercontent.com/whitehatjr/PiratesInvasion/main/assets/boat.png",
+    imageSize: "150x150",
+    confirmButtonText: "Mais uma chance?"
+  },
+  function(botaoApertado){
+    if(botaoApertado){
+      location.reload();
+    }
+  })
  }
